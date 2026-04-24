@@ -1,9 +1,16 @@
 import pandas as pd
+import os
+RAW_DATA_PATH = "data/raw/nykaa_popular_brands_products_2022_10_16.csv"
 
 
-
-df = pd.read_csv("data/raw/nykaa_popular_brands_products_2022_10_16.csv")
+print("--- EXTRACT: Loading raw data ---")
+if not os.path.exists(RAW_DATA_PATH):
+    print("File not found:", RAW_DATA_PATH)
+    exit()
+df = pd.read_csv(RAW_DATA_PATH)
 print("shape:", df.shape)
+print("data type", df.dtypes)
+print("missing values each column has" , df.isna().sum())
 df = df.drop_duplicates(subset="product_id")
 print("shape after removing duplicates:", df.shape)
 df["in_stock"] = df["in_stock"].fillna(False).astype(bool)
@@ -20,8 +27,7 @@ print(df["discount_pct"].describe())
 
 df["is_unrated"] = (df["rating"] == 0) & (df["rating_count"] == 0)
 print(df["is_unrated"].sum())
-
-    
+  
 category_keywords = {
       "Nails": ["nail", "enamel", "polish"],
       "Lips": ["lipstick", "lip", "gloss"],
