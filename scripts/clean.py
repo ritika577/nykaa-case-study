@@ -1,7 +1,7 @@
 import pandas as pd
 import os
-RAW_DATA_PATH = "data/raw/nykaa_popular_brands_products_2022_10_16.csv"
 
+RAW_DATA_PATH = "data/raw/nykaa_popular_brands_products_2022_10_16.csv"
 
 print("--- EXTRACT: Loading raw data ---")
 if not os.path.exists(RAW_DATA_PATH):
