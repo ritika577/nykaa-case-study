@@ -12,13 +12,17 @@ print("shape", df.shape)
 print("data type", df.dtypes)
 print("missing values in each column", df.isna().sum())
 
+# Do heavily discounted products get better ratings?
 filtered_df = df[df["is_unrated"] == False]
-print("filtered df on rating basis:",filtered_df)
-heavily_dct = filtered_df[filtered_df["discount_pct"] >=30]
-print("discount percentage filtered worked on heavily_dct:", heavily_dct)
+print("filtered df on rating basis:",filtered_df.shape)
+heavily_dct = filtered_df[filtered_df["discount_pct"] >=30].groupby("category")
+print("discount percentage filter worked on heavily_dct:", heavily_dct.size())
 median_h_rating = heavily_dct["rating"].median()
 print("median rating of heavily discounted products:", median_h_rating)
-normal_dct = filtered_df[filtered_df["discount_pct"] <30]
-print("discount percentage filtered worked on normal_dct:", normal_dct)
+normal_dct = filtered_df[filtered_df["discount_pct"] <30].groupby("category")
+print("discount percentage filter worked on normal_dct:", normal_dct.size())
 median_n_rating = normal_dct["rating"].median()
 print("median rating of Normal discounted products:", median_n_rating)
+
+
+
