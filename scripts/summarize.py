@@ -12,17 +12,34 @@ print("shape", df.shape)
 print("data type", df.dtypes)
 print("missing values in each column", df.isna().sum())
 
-# Do heavily discounted products get better ratings?
+print("--- Q1: Do heavily discounted products get better ratings? ---")
 filtered_df = df[df["is_unrated"] == False]
-print("filtered df on rating basis:",filtered_df.shape)
-heavily_dct = filtered_df[filtered_df["discount_pct"] >=30].groupby("category")
-print("discount percentage filter worked on heavily_dct:", heavily_dct.size())
-median_h_rating = heavily_dct["rating"].median()
-print("median rating of heavily discounted products:", median_h_rating)
-normal_dct = filtered_df[filtered_df["discount_pct"] <30].groupby("category")
-print("discount percentage filter worked on normal_dct:", normal_dct.size())
-median_n_rating = normal_dct["rating"].median()
-print("median rating of Normal discounted products:", median_n_rating)
+print("Rated products:", filtered_df.shape[0])
+
+heavy_discount = filtered_df[filtered_df["discount_pct"] >=30]
+print("HEAVY discount — count:", heavy_discount.shape[0])
+print("HEAVY discount - median rating:", heavy_discount["rating"].median())
+heavy_discount_by_cat = filtered_df[filtered_df["discount_pct"] >=30].groupby("category")
+print("HEAVY discount — products per category:", heavy_discount_by_cat.size())
+print("HEAVY discount — median rating by category:", heavy_discount_by_cat["rating"].median())
+
+normal_discount = filtered_df[filtered_df["discount_pct"] <30]
+print("NORMAL discount — count:", normal_discount.shape[0])
+print("NORMAL discount - median rating:", normal_discount["rating"].median())
+normal_discount_by_cat = filtered_df[filtered_df["discount_pct"] <30].groupby("category")
+print("NORMAL discount — products per category:", normal_discount_by_cat.size())
+print("NORMAL discount — median rating by category:", normal_discount_by_cat["rating"].median())
 
 
+print("--- Q2: Do high-discount brands have more bestsellers? ---")
+brand_median_discount = df.groupby("brand_name")["discount_pct"].median()
+high_discount_brand = brand_median_discount[brand_median_discount >= 30]
+normal_discount_brand = brand_median_discount[brand_median_discount <30]
+print("High-discount brands:", high_discount_brand.index.tolist())
+print("Normal-discount brands:", normal_discount_brand.index.tolist())
 
+high_discount_products = df[df["brand_name"].isin(high_discount_brand.index)]
+print("HIGH discount brands — products:", high_discount_products.shape[0], "— bestseller rate:", high_discount_products["is_bestseller"].mean())
+
+normal_discount_products = df[df["brand_name"].isin(normal_discount_brand.index)]
+print("NORMAL discount brands — products:", normal_discount_products.shape[0], "— bestseller rate:", normal_discount_products["is_bestseller"].mean())
