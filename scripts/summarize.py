@@ -43,3 +43,13 @@ print("HIGH discount brands — products:", high_discount_products.shape[0], "�
 
 normal_discount_products = df[df["brand_name"].isin(normal_discount_brand.index)]
 print("NORMAL discount brands — products:", normal_discount_products.shape[0], "— bestseller rate:", normal_discount_products["is_bestseller"].mean())
+
+print("--- Q3: Are bestsellers the expensive or cheap option within a brand? ---")
+brand_median_price = df.groupby("brand_name")["price"].median()
+df["brand_median"] = df["brand_name"].map(brand_median_price)
+df["is_cheap"] = df["price"] < df["brand_median"]
+df["is_expensive"] = df["price"] >= df["brand_median"]
+bestsellers = df[df["is_bestseller"] == True]
+print("Total bestsellers:", bestsellers.shape[0])
+print("CHEAP bestsellers:", round(bestsellers["is_cheap"].mean() * 100, 1), "%")
+print("EXPENSIVE bestsellers:", round(bestsellers["is_expensive"].mean() * 100, 1), "%")
