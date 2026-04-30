@@ -1,0 +1,3 @@
+Group,Brand Count,Product Count,Median Discount (%)
+WITH bestsellers,17,3632,20.04
+WITHOUT bestsellers,8,30,20.02
