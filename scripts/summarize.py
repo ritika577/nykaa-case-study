@@ -80,6 +80,14 @@ products_with_bestsellers = df[df["brand_name"].isin(brands_with_bestsellers.ind
 products_without_bestsellers = df[df["brand_name"].isin(brands_without_bestsellers.index)]
 print("WITH bestsellers — brands:", len(brands_with_bestsellers), "— products:", products_with_bestsellers.shape[0], "— median discount:", round(products_with_bestsellers["discount_pct"].median(), 2), "%")
 print("WITHOUT bestsellers — brands:", len(brands_without_bestsellers), "— products:", products_without_bestsellers.shape[0], "— median discount:", round(products_without_bestsellers["discount_pct"].median(), 2), "%")
+
+q4_result = pd.DataFrame({
+    "Group": ["WITH bestsellers", "WITHOUT bestsellers"],
+    "Brand Count" : [len(brands_with_bestsellers), len(brands_without_bestsellers)],
+    "Product Count" : [products_with_bestsellers.shape[0], products_without_bestsellers.shape[0]],
+    "Median Discount (%)" : [round(products_with_bestsellers["discount_pct"].median(), 2), round(products_without_bestsellers["discount_pct"].median(), 2)]
+})
+q4_result.to_csv("data/summary/q4_with_or_without_bestseller_discounts.csv",index=False)
 # ---------------------------------------------------------------------------
 
 print("--- Q5: Which categories have the biggest discounts and most bestsellers? ---")
