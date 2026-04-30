@@ -63,6 +63,13 @@ bestsellers = df[df["is_bestseller"] == True]
 print("Total bestsellers:", bestsellers.shape[0])
 print("CHEAP bestsellers:", round(bestsellers["is_cheap"].mean() * 100, 1), "%")
 print("EXPENSIVE bestsellers:", round(bestsellers["is_expensive"].mean() * 100, 1), "%")
+
+q3_result = pd.DataFrame({
+    "Group": ["Cheap Bestsellers", "Expensive Bestsellers"],
+      "Percentage (%)": [round(bestsellers["is_cheap"].mean() * 100, 1),
+                         round(bestsellers["is_expensive"].mean() * 100, 1)]
+})
+q3_result.to_csv("data/summary/q3_expensive_vs_cheap_bestsellers.csv",index=False)
 # ---------------------------------------------------------------------------
 
 print("--- Q4: Do brands with bestsellers give bigger discounts than brands without? ---")
