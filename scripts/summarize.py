@@ -11,6 +11,7 @@ df = pd.read_csv(CLEANED_CSV_PATH)
 print("shape", df.shape)
 print("data type", df.dtypes)
 print("missing values in each column", df.isna().sum())
+# -----------------------------------------------------------
 
 print("--- Q1: Do heavily discounted products get better ratings? ---")
 rated_df = df[df["is_unrated"] == False]
@@ -26,6 +27,12 @@ normal_discount_by_cat = normal_discount.groupby("category")
 print("HEAVY discount — median rating by category:\n", heavy_discount_by_cat["rating"].median())
 print("NORMAL discount — median rating by category:\n", normal_discount_by_cat["rating"].median())
 
+q1_result = pd.DataFrame({
+    "Heavy Discount (≥30%) - Median Rating" : heavy_discount_by_cat["rating"].median(),
+    "Normal Discount (<30%) - Median Rating" : normal_discount_by_cat["rating"].median()
+})
+q1_result.to_csv("data/summary/q1_discount_vs_rating.csv")
+# ---------------------------------------------------------------------------
 
 print("--- Q2: Do high-discount brands have more bestsellers? ---")
 brand_median_discount = df.groupby("brand_name")["discount_pct"].median()
@@ -39,6 +46,14 @@ normal_discount_products = df[df["brand_name"].isin(normal_discount_brands.index
 print("HIGH discount brands — products:", high_discount_products.shape[0], "— bestseller rate:", round(high_discount_products["is_bestseller"].mean() * 100, 1), "%")
 print("NORMAL discount brands — products:", normal_discount_products.shape[0], "— bestseller rate:", round(normal_discount_products["is_bestseller"].mean() * 100, 1), "%")
 
+q2_result = pd.DataFrame({
+      "Group": ["High Discount Brands", "Normal Discount Brands"],
+      "Product Count": [high_discount_products.shape[0], normal_discount_products.shape[0]],
+      "Bestseller Rate (%)": [round(high_discount_products["is_bestseller"].mean() * 100, 1), round(normal_discount_products["is_bestseller"].mean() * 100, 1)]
+  })
+q2_result.to_csv("data/summary/q2_high_discount_brands_vs_normal_discount_brands.csv",index=False)
+# ---------------------------------------------------------------------------
+
 print("--- Q3: Are bestsellers the expensive or cheap option within a brand? ---")
 brand_median_price = df.groupby("brand_name")["price"].median()
 df["brand_median"] = df["brand_name"].map(brand_median_price)
@@ -48,6 +63,7 @@ bestsellers = df[df["is_bestseller"] == True]
 print("Total bestsellers:", bestsellers.shape[0])
 print("CHEAP bestsellers:", round(bestsellers["is_cheap"].mean() * 100, 1), "%")
 print("EXPENSIVE bestsellers:", round(bestsellers["is_expensive"].mean() * 100, 1), "%")
+# ---------------------------------------------------------------------------
 
 print("--- Q4: Do brands with bestsellers give bigger discounts than brands without? ---")
 brands_status = df.groupby("brand_name")["is_bestseller"].any()
@@ -57,6 +73,7 @@ products_with_bestsellers = df[df["brand_name"].isin(brands_with_bestsellers.ind
 products_without_bestsellers = df[df["brand_name"].isin(brands_without_bestsellers.index)]
 print("WITH bestsellers — brands:", len(brands_with_bestsellers), "— products:", products_with_bestsellers.shape[0], "— median discount:", round(products_with_bestsellers["discount_pct"].median(), 2), "%")
 print("WITHOUT bestsellers — brands:", len(brands_without_bestsellers), "— products:", products_without_bestsellers.shape[0], "— median discount:", round(products_without_bestsellers["discount_pct"].median(), 2), "%")
+# ---------------------------------------------------------------------------
 
 print("--- Q5: Which categories have the biggest discounts and most bestsellers? ---")
 category_median_discount = round(df.groupby("category")["discount_pct"].median(), 2)
