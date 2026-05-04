@@ -48,6 +48,7 @@ print("NORMAL discount brands — products:", normal_discount_products.shape[0],
 
 q2_result = pd.DataFrame({
       "Group": ["High Discount Brands", "Normal Discount Brands"],
+      "No: of brands": [len(high_discount_brands),len(normal_discount_brands)],
       "Product Count": [high_discount_products.shape[0], normal_discount_products.shape[0]],
       "Bestseller Rate (%)": [round(high_discount_products["is_bestseller"].mean() * 100, 1), round(normal_discount_products["is_bestseller"].mean() * 100, 1)]
   })
