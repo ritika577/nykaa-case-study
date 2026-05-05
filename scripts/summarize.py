@@ -101,5 +101,5 @@ q5_result = pd.DataFrame({
     "Median discount by category": category_median_discount,
     "Bestseller rate by category (%)" : category_bestseller_rate
 })
-q5_result.to_csv("data/summary/q5_categories_with_most_discounts_and_bestsellers.csv", index= False)
+q5_result.to_csv("data/summary/q5_categories_with_most_discounts_and_bestsellers.csv")
 # ---------------------------------------------------------------------------
